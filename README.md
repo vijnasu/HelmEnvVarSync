@@ -44,7 +44,7 @@ cd app
 Build the Docker image:
 
 ```
-docker build -t <YOUR_DOCKER_REPO>/helmenvvarsync:latest .
+docker build -t <YOUR_DOCKER_REPO>/helmenvvarsync:latest app/
 ```
 
 Push the Docker image to your repository:
@@ -70,19 +70,19 @@ helm dependency update
 To deploy the application to your Kubernetes cluster using the default environment variables:
 
 ```
-helm install sampleapp .
+helm install sampleapp ./helm/sampleapp
 ```
 
 To deploy with custom environment variables:
 
 ```
-helm install sampleapp . --set env.VARIABLE1="Your Value 1" --set env.VARIABLE2="Your Value 2"
+helm install sampleapp ./helm/sampleapp --set env.VARIABLE1="Your Value 1" --set env.VARIABLE2="Your Value 2"
 ```
 
 To dynamically update the environment variables in the deployed application:
 
 ```
-helm upgrade sampleapp . --set env.VARIABLE1="New Value 1" --set env.VARIABLE2="New Value 2"
+helm upgrade sampleapp ./helm/sampleapp --set env.VARIABLE1="New Value 1" --set env.VARIABLE2="New Value 2"
 ```
 
 You can verify the environment variables' values by checking the logs of the running pod:
