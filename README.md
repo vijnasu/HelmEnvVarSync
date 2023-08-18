@@ -6,8 +6,8 @@ This project demonstrates how to pass environment variables to a Python applicat
 
 - Project Structure
 - Prerequisites
-- Setup
-- Deployment
+- Automated Setup & Deployment using `build_run.sh`
+- Manual Setup & Deployment
 - License
 
 ## Project Structure
@@ -24,6 +24,7 @@ HelmEnvVarSync/
 │       │   └── deployment.yaml
 │       ├── values.yaml
 │       └── Chart.yaml
+├── build_run.sh        # Automated build and deployment script
 └── README.md           # This file
 ```
 
@@ -33,7 +34,24 @@ HelmEnvVarSync/
 - Kubernetes cluster set up and kubectl command-line tool installed.
 - Helm installed.
 
-## Setup
+## Automated Deployment using build_run.sh
+To simplify the deployment process, you can use the `build_run.sh` script. This script will build the Docker image, push it to the specified Docker repository, and deploy or upgrade the Helm release with optional environment variables.
+
+Provide execute permissions to the script:
+
+```
+chmod +x build_run.sh
+```
+
+Run the script:
+
+```
+./build_run.sh [YOUR_DOCKER_REPO] [OPTIONAL_VAR1] [OPTIONAL_VAR2]
+```
+
+Replace `[YOUR_DOCKER_REPO]` with your Docker repository. You can also provide optional values for `VARIABLE1` and `VARIABLE2` by replacing `[OPTIONAL_VAR1]` and `[OPTIONAL_VAR2]`.
+
+## Manual Setup & Deployment
 ### Building and Pushing Docker Image:
 Navigate to the app directory:
 
@@ -66,7 +84,7 @@ Install dependencies (if any):
 helm dependency update
 ```
 
-## Deployment
+## Manual Deployment
 To deploy the application to your Kubernetes cluster using the default environment variables:
 
 ```
