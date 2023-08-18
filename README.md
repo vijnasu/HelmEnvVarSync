@@ -100,7 +100,8 @@ env:
   VARIABLE2: "Initial Value 2"
 sampleapp/templates/deployment.yaml:
 ```
-`yaml`
+
+`sampleapp/templates/deployment.yaml`:
 ```
 apiVersion: apps/v1
 kind: Deployment
