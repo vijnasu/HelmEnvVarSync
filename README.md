@@ -6,6 +6,7 @@ This project demonstrates how to pass environment variables to a Python applicat
 
 - Project Structure
 - Prerequisites
+- Development
 - Automated Setup & Deployment using `build_run.sh`
 - Manual Setup & Deployment
 - License
@@ -33,6 +34,91 @@ HelmEnvVarSync/
 - Docker installed and running.
 - Kubernetes cluster set up and kubectl command-line tool installed.
 - Helm installed.
+
+## Development
+
+### Python Application
+
+1. First, we'll create a simple Python application that reads the environment variables and displays them.
+
+`app.py`:
+```python
+import os
+import time
+
+def main():
+
+    print("Starting application...")
+
+    variable1 = os.environ.get("VARIABLE1", "Not Set")
+    variable2 = os.environ.get("VARIABLE2", "Not Set")
+
+    while True:
+        print("VARIABLE1:", os.environ.get("VARIABLE1", "Not Set"))
+        print("VARIABLE2:", os.environ.get("VARIABLE2", "Not Set"))
+        time.sleep(10)  # Pause for 10 seconds before printing again
+
+    print("Ending application...")
+
+if __name__ == "__main__":
+    main()
+```
+
+2. Dockerfile for Python Application
+
+`Dockerfile`:
+```
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY app.py .
+
+CMD ["python", "-u", "/app/app.py"]
+```
+
+3. Helm Chart
+
+You can create a Helm chart using the following command:
+
+```
+cd helm
+helm create sampleapp
+cd ..
+```
+
+Inside this sampleapp directory, adjust the following files:
+
+`helm/sampleapp/values.yaml`:
+```
+image:
+  repository: myrepo/myimage
+  tag: latest
+
+env:
+  VARIABLE1: "Initial Value 1"
+  VARIABLE2: "Initial Value 2"
+sampleapp/templates/deployment.yaml:
+```
+`yaml`
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: sample-container
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        env:
+        - name: VARIABLE1
+          value: "{{ .Values.env.VARIABLE1 }}"
+        - name: VARIABLE2
+          value: "{{ .Values.env.VARIABLE2 }}"
+```
 
 ## Automated Deployment using build_run.sh
 To simplify the deployment process, you can use the `build_run.sh` script. This script will build the Docker image, push it to the specified Docker repository, and deploy or upgrade the Helm release with optional environment variables.
