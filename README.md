@@ -101,7 +101,7 @@ env:
 sampleapp/templates/deployment.yaml:
 ```
 
-`sampleapp/templates/deployment.yaml`:
+`helm/sampleapp/templates/deployment.yaml`:
 ```
 apiVersion: apps/v1
 kind: Deployment
